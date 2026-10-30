@@ -7,6 +7,7 @@ services:
       - "127.0.0.1:${MCP_GATEWAY_PORT:-9104}:8080"
     networks:
       - default
+      - mcp-serena
     healthcheck:
       test:
         - CMD
@@ -17,3 +18,81 @@ services:
         - http://127.0.0.1:8080/gateway/healthz
       interval: 3s
     restart: unless-stopped
+
+  mcp-serena:
+    build: ./servers/serena
+    environment:
+      # 起動時の利用状況の送信（oraios-software.de）を無効にする
+      SERENA_USAGE_REPORTING: "false"
+    networks:
+      - mcp-serena
+    # pre_start が使う default ネットワークを、mcp-serena だけを起動するときにも定義させる
+    # （サービスが使わないネットワークは、Compose が構成から外す）
+    depends_on:
+      - mcp-gateway
+    volumes:
+      - ./example:/workspace:ro
+      # プロジェクト内: 依存関係とビルド出力（読み取り専用の /workspace の上に重ねる）
+      - mcp-serena-py-venv:/workspace/py/.venv
+      - mcp-serena-ts-node-modules:/workspace/ts/node_modules
+      - mcp-serena-cs-obj:/workspace/cs/obj
+      - mcp-serena-cs-bin:/workspace/cs/bin
+      # プロジェクト外: serena のデータとキャッシュ
+      - mcp-serena-data:/home/serena/.serena/projects
+      - mcp-serena-memories:/home/serena/.serena/memories
+      - mcp-serena-cache:/home/serena/.cache
+      - mcp-serena-go:/home/serena/go
+      - mcp-serena-nuget:/home/serena/.nuget
+      - mcp-serena-dotnet:/home/serena/.dotnet
+    cap_drop:
+      - ALL
+    pre_start:
+      # 読み取り専用の /workspace の下に重ねるボリュームのマウント先を、ホスト側に作る
+      # /workspace を書き込み可能でマウントし直すと、Docker がマウント先を作る（コマンドは何もしない）
+      - volumes:
+          - ./example:/workspace
+        entrypoint: []
+        command:
+          - "true"
+      # /workspace の各プロジェクトの依存関係を、プロジェクト内のボリュームに入れる
+      # 依存関係の取得に外部との通信が必要なため、このステップだけ default にも所属させる
+      # （サービスの mcp-serena は引き継がれ、外せない。サービスが使わないネットワークは作られないため default を使う）
+      - user: "0:0"
+        networks:
+          - default
+        cap_add:
+          - CHOWN
+          - SETUID
+          - SETGID
+        entrypoint: []
+        command:
+          - /opt/serena/bin/deps.sh
+    healthcheck:
+      test:
+        - CMD
+        - python3
+        - -c
+        - >-
+          import socket;
+          socket.create_connection(('127.0.0.1', 8000), 1).close()
+      interval: 3s
+      start_period: 2m
+    restart: unless-stopped
+
+networks:
+  # MCP サーバーは外部と通信させない（gateway からの通信のみ）
+  mcp-serena:
+    name: mcp-serena
+    internal: true
+
+volumes:
+  mcp-serena-py-venv:
+  mcp-serena-ts-node-modules:
+  mcp-serena-cs-obj:
+  mcp-serena-cs-bin:
+  mcp-serena-data:
+  mcp-serena-memories:
+  mcp-serena-cache:
+  mcp-serena-go:
+  mcp-serena-nuget:
+  mcp-serena-dotnet:

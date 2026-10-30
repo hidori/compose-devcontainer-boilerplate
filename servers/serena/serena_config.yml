@@ -1,0 +1,20 @@
+---
+# serena のグローバル設定（イメージの $SERENA_HOME に置く）
+# 記載のない項目は serena の既定値を使う
+
+# コンテナ内では GUI とダッシュボードを使わない
+gui_log_window: false
+web_dashboard: false
+web_dashboard_open_on_launch: false
+
+# /workspace は読み取り専用なので、プロジェクトの .serena フォルダはボリューム（$SERENA_HOME/projects）に置く
+project_serena_folder_location: >-
+  /home/serena/.serena/projects/$projectFolderName
+
+# イメージに入れた言語サーバーを使い、実行時に取得させない
+ls_specific_settings:
+  python_basedpyright:
+    ls_path: /opt/serena/.venv/bin/basedpyright-langserver
+
+# 登録済みのプロジェクト（serena の必須項目。起動時に --project で指定するので空でよい）
+projects: []

@@ -1,0 +1,21 @@
+---
+# /workspace のプロジェクト設定（entrypoint.sh が起動のたびに .serena フォルダへ配置する）
+# 記載のない項目は serena の既定値を使う
+project_name: "workspace"
+
+# 先頭が既定の言語サーバー（どれも対応しないファイルの受け皿）になる
+language_servers:
+  - python_basedpyright
+  - csharp
+  - go
+  - typescript
+
+# /workspace は読み取り専用でマウントするので、編集系のツールを無効にする
+read_only: true
+
+# 依存関係とビルド出力（deps.sh がボリュームに作る）は解析対象から外す
+ignored_paths:
+  - "**/.venv/**"
+  - "**/node_modules/**"
+  - "**/bin/**"
+  - "**/obj/**"
