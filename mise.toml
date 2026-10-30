@@ -1,0 +1,12 @@
+[tools]
+betterleaks = "1.9.0"
+gh = "2.103.3"
+hadolint = "2.15.1"
+jactionlint = "2.3.0"
+osv-scanner = "2.7.0"
+python = "3.15.2"
+rumdl = "0.3.0"
+shellcheck = "0.11.0"
+tombi = "1.9.6"
+uv = "0.13.5"
+yamllint = "1.38.0"
