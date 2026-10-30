@@ -1,0 +1,19 @@
+---
+services:
+  mcp-gateway:
+    build: ./gateway
+    user: "100:101"
+    ports:
+      - "127.0.0.1:${MCP_GATEWAY_PORT:-9104}:8080"
+    networks:
+      - default
+    healthcheck:
+      test:
+        - CMD
+        - wget
+        - -q
+        - -O
+        - "-"
+        - http://127.0.0.1:8080/gateway/healthz
+      interval: 3s
+    restart: unless-stopped
