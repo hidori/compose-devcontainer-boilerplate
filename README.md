@@ -35,8 +35,13 @@ flowchart TB
         serena["mcp-serena"]
     end
 
+    subgraph net_repomix["mcp-repomix"]
+        repomix["mcp-repomix"]
+    end
+
     user -->|公開ポート| net_default
     gw --> net_serena
+    gw --> net_repomix
     gw --> net_id
 ```
 
@@ -69,7 +74,7 @@ MCP サーバーの一覧、ネットワーク、gateway などの詳細は [SPE
 ## セキュリティ
 
 - **ネットワーク分離**: 各 MCP サーバーを専用の docker network に隔離し、MCP サーバー間の通信と、外部（インターネットを含む）への通信をできなくしています。MCP サーバーとその依存パッケージの保護は、この分離によってのみ行います
-- **読み取り専用マウント**: serena に渡すプロジェクトのディレクトリは読み取り専用でマウントし、MCP サーバーからファイルを変更できないようにしています
+- **読み取り専用マウント**: MCP サーバーに渡すプロジェクトのディレクトリは読み取り専用でマウントし、MCP サーバーからファイルを変更できないようにしています
 - **公開範囲の限定**: gateway の公開ポートは `127.0.0.1` にのみ bind し、LAN には公開しません。gateway で公開するパスは MCP エンドポイントのみの許可リスト方式です
 - **DNS rebinding 対策**: gateway で `Host` / `Origin` ヘッダーを検査し、ブラウザ経由の不正なリクエストを拒否します
 
@@ -79,6 +84,7 @@ MCP サーバーの一覧、ネットワーク、gateway などの詳細は [SPE
 
 - [SPEC.md](SPEC.md) — 共通の仕様
 - [servers/serena/SPEC.md](servers/serena/SPEC.md) — serena の仕様
+- [servers/repomix/SPEC.md](servers/repomix/SPEC.md) — repomix の仕様
 - [AGENTS.md](AGENTS.md) — コーディングエージェント向けの指示
 
 ## ライセンス

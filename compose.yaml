@@ -8,6 +8,7 @@ services:
     networks:
       - default
       - mcp-serena
+      - mcp-repomix
     healthcheck:
       test:
         - CMD
@@ -79,10 +80,32 @@ services:
       start_period: 2m
     restart: unless-stopped
 
+  mcp-repomix:
+    build: ./servers/repomix
+    networks:
+      - mcp-repomix
+    volumes:
+      - ./example:/workspace:ro
+    cap_drop:
+      - ALL
+    healthcheck:
+      test:
+        - CMD
+        - python3
+        - -c
+        - >-
+          import socket;
+          socket.create_connection(('127.0.0.1', 8000), 1).close()
+      interval: 3s
+    restart: unless-stopped
+
 networks:
   # MCP サーバーは外部と通信させない（gateway からの通信のみ）
   mcp-serena:
     name: mcp-serena
+    internal: true
+  mcp-repomix:
+    name: mcp-repomix
     internal: true
 
 volumes:

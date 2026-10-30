@@ -43,6 +43,7 @@ flowchart TB
 | 識別子 | 概要 | 仕様 |
 | --- | --- | --- |
 | serena | [Serena](https://github.com/oraios/serena) | [servers/serena/SPEC.md](servers/serena/SPEC.md) |
+| repomix | [Repomix](https://github.com/yamadashy/repomix) | [servers/repomix/SPEC.md](servers/repomix/SPEC.md) |
 
 ### イメージ
 
@@ -52,6 +53,13 @@ flowchart TB
   - カスタムの Dockerfile では、MCP サーバー本体を `/opt/<id>` にインストールする
 - 依存関係（ベースイメージ、MCP サーバー本体、依存パッケージ）はバージョンまたは digest で固定する
   - 公式イメージは digest で固定する
+- npm のロックファイル（`package-lock.json`）を作るときは、次を行う（npm のレジストリは信用しきれないため）
+  - `npm audit fix --package-lock-only --ignore-scripts` で、脆弱性のある依存パッケージを semver の範囲内で修正済みの版に上げる（`--force` は使わない）
+  - `npm audit` で残った脆弱性を確認する
+  - `npm ci --ignore-scripts` でインストールしたうえで、`npm audit signatures` で署名を検証する
+- uv のロックファイル（`uv.lock`）を作るときは、次を行う
+  - `uv audit --frozen` で脆弱性とプロジェクトの状態（PyPI での隔離など）を確認する（uv では実験的な機能）
+  - 修正済みの版がある場合は、`uv lock --upgrade-package <名前>` で上げる（依存元の制約の範囲内）
 
 ### マウント先
 
@@ -119,6 +127,7 @@ gateway/
 
 - MCP サーバーとその依存パッケージの保護は、ネットワーク分離によってのみ行う
   - 依存パッケージの検査（ロックファイルやイメージの脆弱性検査）は行わない
+  - 例外として、npm と uv のロックファイルを作るときの手順を定める（[イメージ](#イメージ) 参照）
 - 各 MCP サーバーは個別の `mcp-<id>` ネットワークに隔離し、MCP サーバー間で通信できないようにする
 - `mcp-<id>` は `internal: true` とし、MCP サーバーから外部（インターネットを含む）へ通信できないようにする（必須）
   - gateway は `mcp-<id>` に所属するため、gateway から MCP サーバーへの通信は届く
@@ -130,7 +139,7 @@ gateway/
 
 ### 読み取り専用マウント
 
-- serena へのマウントは読み取り専用（`:ro`）とし、MCP サーバーからプロジェクトのファイルを変更できないようにする（[servers/serena/SPEC.md](servers/serena/SPEC.md) 参照）
+- MCP サーバーへのプロジェクトのマウントは読み取り専用（`:ro`）とし、MCP サーバーからプロジェクトのファイルを変更できないようにする
   - 例外として、起動前の `pre_start` でボリュームのマウント先を作るステップだけは書き込み可能でマウントする（コマンドは何もしない）
 
 ### 公開範囲
