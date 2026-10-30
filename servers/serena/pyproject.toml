@@ -10,3 +10,8 @@ dependencies = [
 
 [tool.uv]
 package = false
+# serena-agent 2.1.0 が固定している版に脆弱性があり、修正版（パッチ版）に上書きする（uv audit で検出）
+# - werkzeug 3.1.7: PYSEC-2026-4312（safe_join() が Windows の特殊なデバイス名を通す）
+override-dependencies = [
+  "werkzeug==3.1.9",
+]
