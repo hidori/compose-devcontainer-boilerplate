@@ -53,7 +53,7 @@ scan-tools: ## 開発ツールの脆弱性を検査する
 	done; \
 	exit $$status
 
-# Critical（CVSS 9.0 以上）があれば失敗する
+# High 以上（CVSS 7.0 以上）または深刻度不明で、修正版があるものがあれば失敗する（修正版がないものは警告）
 # osv-scanner の終了コードは 0（脆弱性なし）と 1（脆弱性あり）のみ正常とする
 scan-mcp-nginx: prepare-env ## gateway（nginx）のコンテナイメージをビルドし、脆弱性を検査する
 	docker compose build mcp-gateway
@@ -67,7 +67,7 @@ scan-mcp-nginx: prepare-env ## gateway（nginx）のコンテナイメージを�
 		echo "ERROR: $$image: osv-scanner exited with $$rc" >&2; \
 		exit 1; \
 	fi; \
-	$(MISE) python3 -I scripts/osv-summary.py "$$image" < "$$json"
+	$(MISE) python3 -I scripts/osv-summary.py --policy fixable-high "$$image" < "$$json"
 
 lint: lint-markdown lint-yaml lint-shell lint-dockerfile lint-actions lint-toml lint-secrets ## すべての lint を実行する
 
