@@ -10,7 +10,10 @@ name: scan-mcp-nginx
       - gateway/**
       - scripts/osv-summary.py
       - Makefile
+      - compose.yaml
+      - mise.toml
       - .github/workflows/scan-mcp-nginx.yml
+      - .github/actions/setup-compose/**
 
 permissions:
   contents: read
