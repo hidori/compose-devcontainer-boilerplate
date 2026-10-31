@@ -1,0 +1,19 @@
+---
+name: setup-compose
+description: README の前提（Docker Compose v5.3.0 以上）を満たす Docker Compose を入れる
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      env:
+        COMPOSE_VERSION: v5.6.1
+        COMPOSE_SHA256: 47737f4236e6d3ccea7291995203f8f018058783b4c3a9469119811a0b5db8c0
+      run: |
+        dir="$HOME/.docker/cli-plugins"
+        mkdir -p "$dir"
+        curl -fsSL -o "$dir/docker-compose" \
+          "https://github.com/docker/compose/releases/download/$COMPOSE_VERSION/docker-compose-linux-x86_64"
+        echo "$COMPOSE_SHA256  $dir/docker-compose" | sha256sum -c -
+        chmod +x "$dir/docker-compose"
+        docker compose version
