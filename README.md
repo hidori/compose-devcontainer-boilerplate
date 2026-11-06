@@ -14,8 +14,8 @@
 | 対象 | 内容 | コピー方法 |
 | --- | --- | --- |
 | `compose.yaml` | 必要なサービスとネットワークの定義 | 利用プロジェクトの compose.yaml に記述をコピー＆ペースト |
-| `gateway/` | gateway の Dockerfile と nginx 設定 | ディレクトリごとコピー |
-| `servers/<id>/` | 利用する MCP サーバーのディレクトリ | ディレクトリごとコピー |
+| `docker/mcp/gateway/` | gateway の Dockerfile と nginx 設定 | ディレクトリごとコピー |
+| `docker/mcp/<id>/` | 利用する MCP サーバーのディレクトリ | ディレクトリごとコピー |
 
 ## 構成
 
@@ -52,12 +52,13 @@ MCP サーバーの一覧、ネットワーク、gateway などの詳細は [SPE
 ```text
 .
 ├── compose.yaml          # MCP サーバーと gateway のサービス定義
-├── gateway/              # gateway（nginx）の Dockerfile と設定
-├── servers/
-│   └── <id>/             # MCP サーバーごとのファイル
-│       ├── README.md     # MCP サーバーの主旨と使用方法
-│       ├── SPEC.md       # MCP サーバー固有の仕様
-│       └── Dockerfile    # カスタムの Dockerfile（必要な場合）
+├── docker/
+│   └── mcp/
+│       ├── gateway/      # gateway（nginx）の Dockerfile と設定
+│       └── <id>/         # MCP サーバーごとのファイル
+│           ├── README.md # MCP サーバーの主旨と使用方法
+│           ├── SPEC.md   # MCP サーバー固有の仕様
+│           └── Dockerfile # カスタムの Dockerfile（必要な場合）
 ├── example/              # MCP サーバーを利用する側の仮想のプロジェクト
 ├── scripts/              # Makefile から呼び出す補助スクリプト
 ├── README.md             # プロジェクトの主旨と概要（このファイル）
@@ -84,8 +85,8 @@ MCP サーバーの一覧、ネットワーク、gateway などの詳細は [SPE
 ## ドキュメント
 
 - [SPEC.md](SPEC.md) — 共通の仕様
-- [servers/serena/SPEC.md](servers/serena/SPEC.md) — serena の仕様
-- [servers/repomix/SPEC.md](servers/repomix/SPEC.md) — repomix の仕様
+- [docker/mcp/serena/SPEC.md](docker/mcp/serena/SPEC.md) — serena の仕様
+- [docker/mcp/repomix/SPEC.md](docker/mcp/repomix/SPEC.md) — repomix の仕様
 - [AGENTS.md](AGENTS.md) — コーディングエージェント向けの指示
 
 ## ライセンス

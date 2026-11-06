@@ -1,6 +1,6 @@
 # repomix
 
-[Repomix](https://github.com/yamadashy/repomix) を、[SPEC.md](../../SPEC.md) に基づいてホストするための仕様。
+[Repomix](https://github.com/yamadashy/repomix) を、[SPEC.md](../../../SPEC.md) に基づいてホストするための仕様。
 
 ## 基本情報
 

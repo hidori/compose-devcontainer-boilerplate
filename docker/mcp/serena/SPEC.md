@@ -1,6 +1,6 @@
 # serena
 
-[Serena](https://github.com/oraios/serena) を、[SPEC.md](../../SPEC.md) に基づいてホストするための仕様。
+[Serena](https://github.com/oraios/serena) を、[SPEC.md](../../../SPEC.md) に基づいてホストするための仕様。
 
 ## 基本情報
 
@@ -17,7 +17,7 @@
 ## マウント
 
 - `example/` を `/workspace` にボリュームマウントで渡す
-  - マウントは読み取り専用（`:ro`）とする（[SPEC.md のセキュリティ](../../SPEC.md#セキュリティ) 参照）
+  - マウントは読み取り専用（`:ro`）とする（[SPEC.md のセキュリティ](../../../SPEC.md#セキュリティ) 参照）
   - `/workspace` を 1 つの serena プロジェクトとし、直下の言語ごとのサブフォルダを解析対象とする
 - serena のプロジェクト設定（`project.yml`）は `read_only: true` とし、編集系のツールを無効にする
 

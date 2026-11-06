@@ -42,8 +42,8 @@ flowchart TB
 
 | 識別子 | 概要 | 仕様 |
 | --- | --- | --- |
-| serena | [Serena](https://github.com/oraios/serena) | [servers/serena/SPEC.md](servers/serena/SPEC.md) |
-| repomix | [Repomix](https://github.com/yamadashy/repomix) | [servers/repomix/SPEC.md](servers/repomix/SPEC.md) |
+| serena | [Serena](https://github.com/oraios/serena) | [docker/mcp/serena/SPEC.md](docker/mcp/serena/SPEC.md) |
+| repomix | [Repomix](https://github.com/yamadashy/repomix) | [docker/mcp/repomix/SPEC.md](docker/mcp/repomix/SPEC.md) |
 
 ### イメージ
 
@@ -121,7 +121,7 @@ flowchart TB
 - 設定ファイルは MCP サーバーごとに分ける
 
 ```text
-gateway/
+docker/mcp/gateway/
 ├── Dockerfile
 ├── nginx.conf          # 共通設定
 └── conf.d/

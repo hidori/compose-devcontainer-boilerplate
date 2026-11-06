@@ -1,7 +1,7 @@
 ---
 services:
   mcp-gateway:
-    build: ./gateway
+    build: ./docker/mcp/gateway
     user: "100:101"
     ports:
       - "127.0.0.1:${MCP_GATEWAY_PORT:-9104}:8080"
@@ -21,7 +21,7 @@ services:
     restart: unless-stopped
 
   mcp-serena:
-    build: ./servers/serena
+    build: ./docker/mcp/serena
     environment:
       # 起動時の利用状況の送信（oraios-software.de）を無効にする
       SERENA_USAGE_REPORTING: "false"
@@ -81,7 +81,7 @@ services:
     restart: unless-stopped
 
   mcp-repomix:
-    build: ./servers/repomix
+    build: ./docker/mcp/repomix
     networks:
       - mcp-repomix
     volumes:

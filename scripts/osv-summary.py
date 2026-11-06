@@ -19,7 +19,7 @@ MEDIUM = 4.0
 LEVELS = ["Critical", "High", "Medium", "Low", "Unknown"]
 
 FIXABLE_MESSAGE = (
-    "修正版のある脆弱性があります。gateway/Dockerfile の版を上げて"
+    "修正版のある脆弱性があります。docker/mcp/gateway/Dockerfile の版を上げて"
     "（nginx は apk add、それ以外は FROM の digest）、make scan-mcp-nginx で再検査してください。"
 )
 UNDETERMINED_MESSAGE = "修正版の有無を判定できない脆弱性があります。osv-scanner の出力を確認してください。"

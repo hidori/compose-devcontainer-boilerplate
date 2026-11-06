@@ -8,7 +8,7 @@
 
 ### 仕様
 
-- SPEC.md と、対象 MCP サーバーの servers/<id>/SPEC.md の仕様に従う
+- SPEC.md と、対象 MCP サーバーの docker/mcp/<id>/SPEC.md の仕様に従う
 
 ### 文書の責務
 
@@ -18,8 +18,8 @@
   - 構成やセキュリティ対策など、プロジェクトの全体像を把握するために必要な事項は、概要と正となる文書へのポインタを必ず記載する
   - 要約は正となる文書の内容に従い、詳細は転記しない
 - SPEC.md: すべての MCP サーバーに共通する仕様
-- servers/<id>/SPEC.md: MCP サーバー固有の仕様
-- servers/<id>/README.md: MCP サーバーの主旨と使用方法（接続 URL、クライアント設定例、制約など）
+- docker/mcp/<id>/SPEC.md: MCP サーバー固有の仕様
+- docker/mcp/<id>/README.md: MCP サーバーの主旨と使用方法（接続 URL、クライアント設定例、制約など）
   - MCP サーバーの実装時に作成する
 
 ### 記述の原則
@@ -31,7 +31,7 @@
 
 ## 作業手順
 
-1. SPEC.md と、対象 MCP サーバーの servers/<id>/SPEC.md を読む
+1. SPEC.md と、対象 MCP サーバーの docker/mcp/<id>/SPEC.md を読む
 2. 変更内容を提示し、指示・許可を得る
 3. 変更する
 4. `make lint` を実行する

@@ -7,7 +7,7 @@ name: scan-mcp-nginx
   workflow_dispatch:
   pull_request:
     paths:
-      - gateway/**
+      - docker/mcp/gateway/**
       - scripts/osv-summary.py
       - Makefile
       - compose.yaml
