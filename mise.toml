@@ -1,12 +1,12 @@
 [tools]
-betterleaks = "1.9.0"
-gh = "2.103.3"
-hadolint = "2.15.1"
-jactionlint = "2.3.0"
-osv-scanner = "2.7.0"
-python = "3.15.2"
-rumdl = "0.3.0"
-shellcheck = "0.11.0"
-tombi = "1.9.6"
-uv = "0.13.5"
-yamllint = "1.38.0"
+betterleaks = "1.9.0"   # make lint-secrets（シークレットの混入検査）
+gh = "2.103.3"          # コーディングエージェントが GitHub の操作に使用
+hadolint = "2.15.1"     # make lint-dockerfile（Dockerfile の静的検査）
+jactionlint = "2.3.0"   # make lint-actions（GitHub Actions のワークフローの静的検査）
+osv-scanner = "2.7.0"   # make scan-mcp-nginx、make scan-tools（脆弱性検査）
+python = "3.15.2"       # scripts/osv-summary.py の実行、yamllint の実行環境
+rumdl = "0.3.0"         # make lint-markdown（Markdown の静的検査）
+shellcheck = "0.11.0"   # make lint-shell（シェルスクリプトの静的検査）
+tombi = "1.9.6"         # make lint-toml（TOML の静的検査）
+uv = "0.13.5"           # uv.lock の作成と監査（SPEC.md のイメージ参照）、yamllint のインストール
+yamllint = "1.38.0"     # make lint-yaml（YAML の静的検査）
