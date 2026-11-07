@@ -17,6 +17,14 @@
   - dev コンテナから MCP gateway を使うか（使う場合は、gateway で許可する `Host` を追加する）
   - 公式イメージの脆弱性検査の扱い（外部と通信するため、MCP サーバーの「ネットワーク分離で守る」は当てはまらない）
 
+## 開発ツール
+
+- [ ] 開発ツールの実行場所（ホスト / dev コンテナ / 使い捨てコンテナ）を決める
+  - Docker を使う作業（`make up` / `down` / `test`、`make scan-mcp-nginx`）はホストに残す
+    - dev コンテナから Docker を操作するには、Docker ソケットのマウントか Docker-in-Docker が必要で、セキュリティの方針と合わないため
+  - ホストから Python を外す場合は、`scripts/osv-summary.py` の置き換え（`jq` での集計、uv が管理する Python での実行など）を検討する
+  - Node.js（ロックファイル作成時の `npm audit` など）はホストに入れず、コンテナで実行する
+
 ## MCP サーバー
 
 - [ ] serena の依存関係のインストール（`pre_start` と `deps.sh`）を見直す
