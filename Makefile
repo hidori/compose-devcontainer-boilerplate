@@ -1,3 +1,7 @@
+# パイプの途中のコマンドの失敗を、パイプ全体の終了コードに反映させる（osv-scan.py | osv-format.py など）
+SHELL := bash
+.SHELLFLAGS := -o pipefail -c
+
 MISE := mise exec --
 
 # git 管理下（未追跡を含む、.gitignore 対象を除く）のファイル
@@ -34,9 +38,10 @@ install-tools: ## 開発ツールをインストールし、脆弱性を検査�
 	$(MAKE) scan-tools
 
 # Critical（CVSS 9.0 以上）があれば失敗する。全ツールをスキャンしてから合否を出す
+# High（CVSS 7.0 以上）は明細を表示するが、失敗にはしない。Medium 以下は件数のみ（明細は量が多いため）
 # osv-scanner の終了コードは 0（脆弱性なし）と 1（脆弱性あり）のみ正常とする
 scan-tools: ## 開発ツールの脆弱性を検査する
-	status=0; \
+	( status=0; \
 	json=$$(mktemp); \
 	trap 'rm -f "$$json"' EXIT; \
 	trap 'exit 1' HUP INT TERM PIPE; \
@@ -49,9 +54,9 @@ scan-tools: ## 開発ツールの脆弱性を検査する
 			status=1; \
 			continue; \
 		fi; \
-		$(MISE) python3 -I scripts/osv-summary.py "$$tool" < "$$json" || status=1; \
+		$(MISE) python3 -I scripts/osv-scan.py "$$tool" < "$$json" || status=1; \
 	done; \
-	exit $$status
+	exit $$status ) | $(MISE) python3 -I scripts/osv-format.py
 
 # High 以上（CVSS 7.0 以上）または深刻度不明で、修正版があるものがあれば失敗する（修正版がないものは警告）
 # osv-scanner の終了コードは 0（脆弱性なし）と 1（脆弱性あり）のみ正常とする
@@ -67,7 +72,7 @@ scan-mcp-nginx: prepare-env ## gateway（nginx）のコンテナイメージを�
 		echo "ERROR: $$image: osv-scanner exited with $$rc" >&2; \
 		exit 1; \
 	fi; \
-	$(MISE) python3 -I scripts/osv-summary.py --policy fixable-high "$$image" < "$$json"
+	$(MISE) python3 -I scripts/osv-scan.py --policy fixable-high "$$image" < "$$json" | $(MISE) python3 -I scripts/osv-format.py
 
 lint: lint-markdown lint-yaml lint-shell lint-dockerfile lint-actions lint-toml lint-secrets ## すべての lint を実行する
 

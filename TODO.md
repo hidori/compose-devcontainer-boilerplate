@@ -19,11 +19,18 @@
 
 ## 開発ツール
 
-- [ ] 開発ツールの実行場所（ホスト / dev コンテナ / 使い捨てコンテナ）を決める
+- [ ] 開発ツールの外部依存を軽量化する
+  - 対象は、Node.js や Python のような大型で影響の大きい外部依存（ツール自体が脆弱性を持ちうるため）
+  - 開発ツールの実行場所（ホスト / dev コンテナ / 使い捨てコンテナ）を決める
   - Docker を使う作業（`make up` / `down` / `test`、`make scan-mcp-nginx`）はホストに残す
     - dev コンテナから Docker を操作するには、Docker ソケットのマウントか Docker-in-Docker が必要で、セキュリティの方針と合わないため
-  - ホストから Python を外す場合は、`scripts/osv-summary.py` の置き換え（`jq` での集計、uv が管理する Python での実行など）を検討する
-  - Node.js（ロックファイル作成時の `npm audit` など）はホストに入れず、コンテナで実行する
+  - Python を受け入れるか決める（多くのディストリビューションに標準で入っているため、受け入れる案がある）
+    - 受け入れる場合: mise の `python` を外し、ディストリビューション標準の `python3` を使うか
+      - `scripts/osv-scan.py` と `scripts/osv-format.py` は Python 3.10 以上が必要（`list[str] | None` などの型注釈）
+      - `yamllint`（現在は mise の Python で venv を作成）が標準の Python で動くか確認する
+    - 外す場合: `scripts/osv-scan.py` と `scripts/osv-format.py` の置き換え（`jq` での集計など）と、`yamllint` の置き換え（候補は未調査）
+  - `uv.lock` の作成と監査（`uv audit` など）はコンテナで実行する
+  - Node.js（`package-lock.json` 作成時の `npm audit` など）はホストに入れず、コンテナで実行する
 
 ## MCP サーバー
 
@@ -40,6 +47,8 @@
 - [ ] README.md のディレクトリ構成に、`.github/` と `TODO.md` を追加する
 - [ ] 開発ツールの脆弱性検査（`make scan-tools`。Critical のみ失敗）の基準と理由を SPEC.md に記載する
 - [ ] 公式イメージの digest を更新する手順とタイミングを決める
+- [ ] コミットメッセージにしか残っていない判断の理由を洗い出し、SPEC.md などに移す
+  - 初回リリース前に履歴を 1 コミットにまとめるため、コミットメッセージの理由は消える
 
 ## 後片付け
 
