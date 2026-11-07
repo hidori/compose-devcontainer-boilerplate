@@ -1,6 +1,9 @@
 # docker compose
 .env
 
+# lint
+.rumdl_cache/
+
 # OS
 .DS_Store
 Thumbs.db
