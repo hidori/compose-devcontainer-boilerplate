@@ -35,6 +35,6 @@ claude mcp add --transport http repomix http://localhost:9104/repomix/mcp
 
 ## 制約
 
-- 扱えるのは `/workspace`（`example/`）の中だけです。パスは `/workspace` からの相対パスで指定します
+- 扱えるのは `/workspace`（プロジェクトのルート）の中だけです。パスは `/workspace` からの相対パスで指定します
 - リモートのリポジトリの取り込み（`pack_remote_repository`）は使えません
 - 他のプロジェクトで使うときは、`compose.yaml` のマウント元を、そのプロジェクトに合わせて変更します

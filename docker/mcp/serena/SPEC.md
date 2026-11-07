@@ -16,19 +16,19 @@
 
 ## マウント
 
-- `example/` を `/workspace` にボリュームマウントで渡す
+- プロジェクトのルートを `/workspace` にボリュームマウントで渡す
   - マウントは読み取り専用（`:ro`）とする（[SPEC.md のセキュリティ](../../../SPEC.md#セキュリティ) 参照）
-  - `/workspace` を 1 つの serena プロジェクトとし、直下の言語ごとのサブフォルダを解析対象とする
+  - `/workspace` を 1 つの serena プロジェクトとして解析する
 - serena のプロジェクト設定（`project.yml`）は `read_only: true` とし、編集系のツールを無効にする
 
 ## 言語サーバー
 
-| 言語 | serena の言語サーバー | 対象 |
-| --- | --- | --- |
-| Python | `python_basedpyright` | `example/py/` |
-| C# | `csharp`（Roslyn） | `example/cs/` |
-| Go | `go`（gopls） | `example/go/` |
-| TypeScript | `typescript`（typescript-language-server） | `example/ts/` |
+| 言語 | serena の言語サーバー |
+| --- | --- |
+| Python | `python_basedpyright` |
+| C# | `csharp`（Roslyn） |
+| Go | `go`（gopls） |
+| TypeScript | `typescript`（typescript-language-server） |
 
 - 言語サーバーと実行環境（Python / Node.js / Go / .NET）はイメージに入れ、実行時に取得させない（`mcp-serena` は外部と通信できないため）
   - 公式イメージ（`ghcr.io/oraios/serena`）には .NET と Go がなく、言語サーバーも実行時に取得するため、完結できない。そのためカスタムの Dockerfile を使う
@@ -42,7 +42,8 @@
 
 - 書き込みが必要な場所は、名前付きボリュームに置く
 - プロジェクト内（読み取り専用の `/workspace` の上に重ねる）
-  - 依存関係とビルド出力: `py/.venv`、`ts/node_modules`、`cs/obj`、`cs/bin`
+  - 依存関係とビルド出力（例: `.venv`、`node_modules`、`obj`、`bin`）
+  - 重ねる場所はプロジェクトの構成に合わせて `compose.yaml` に定義する
   - ホストで作ったものは使わない（ホストとコンテナでプラットフォームが異なると動かない場合があるため）
 - プロジェクト外
   - serena のプロジェクトのデータ（`.serena` フォルダ）: `$SERENA_HOME/projects`

@@ -32,12 +32,9 @@ services:
     depends_on:
       - mcp-gateway
     volumes:
-      - ./example:/workspace:ro
+      - .:/workspace:ro
       # プロジェクト内: 依存関係とビルド出力（読み取り専用の /workspace の上に重ねる）
-      - mcp-serena-py-venv:/workspace/py/.venv
-      - mcp-serena-ts-node-modules:/workspace/ts/node_modules
-      - mcp-serena-cs-obj:/workspace/cs/obj
-      - mcp-serena-cs-bin:/workspace/cs/bin
+      # プロジェクトの構成に合わせて追加する（例: mcp-serena-py-venv:/workspace/<dir>/.venv）
       # プロジェクト外: serena のデータとキャッシュ
       - mcp-serena-data:/home/serena/.serena/projects
       - mcp-serena-memories:/home/serena/.serena/memories
@@ -51,7 +48,7 @@ services:
       # 読み取り専用の /workspace の下に重ねるボリュームのマウント先を、ホスト側に作る
       # /workspace を書き込み可能でマウントし直すと、Docker がマウント先を作る（コマンドは何もしない）
       - volumes:
-          - ./example:/workspace
+          - .:/workspace
         entrypoint: []
         command:
           - "true"
@@ -85,7 +82,7 @@ services:
     networks:
       - mcp-repomix
     volumes:
-      - ./example:/workspace:ro
+      - .:/workspace:ro
     cap_drop:
       - ALL
     healthcheck:
@@ -109,10 +106,6 @@ networks:
     internal: true
 
 volumes:
-  mcp-serena-py-venv:
-  mcp-serena-ts-node-modules:
-  mcp-serena-cs-obj:
-  mcp-serena-cs-bin:
   mcp-serena-data:
   mcp-serena-memories:
   mcp-serena-cache:

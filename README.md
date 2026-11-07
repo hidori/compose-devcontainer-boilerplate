@@ -59,7 +59,6 @@ MCP サーバーの一覧、ネットワーク、gateway などの詳細は [SPE
 │           ├── README.md # MCP サーバーの主旨と使用方法
 │           ├── SPEC.md   # MCP サーバー固有の仕様
 │           └── Dockerfile # カスタムの Dockerfile（必要な場合）
-├── example/              # MCP サーバーを利用する側の仮想のプロジェクト
 ├── scripts/              # Makefile から呼び出す補助スクリプト
 ├── README.md             # プロジェクトの主旨と概要（このファイル）
 ├── SPEC.md               # 共通の仕様
